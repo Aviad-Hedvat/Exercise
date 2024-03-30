@@ -2,7 +2,6 @@ package com.aviad.exercise;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aviad.exercise.database.RetroPhoto;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.OkHttpDownloader;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
