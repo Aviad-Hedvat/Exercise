@@ -29,16 +29,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView list_LST_photos;
-    private SharedPreferences.Editor editor;
-    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        editor = getApplicationContext().getSharedPreferences("MY_SP", Context.MODE_PRIVATE).edit();
-        gson = new Gson();
 
         list_LST_photos = findViewById(R.id.list_LST_photos);
 

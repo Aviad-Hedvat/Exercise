@@ -27,47 +27,25 @@ public class Adapter_RetroPhoto extends RecyclerView.Adapter<Adapter_RetroPhoto.
     private List<RetroPhoto> dataList;
     private LayoutInflater layoutInflater;
     private Context context;
-    private PhotoItemClickedListener photoItemClickedListener;
+    private Button list_BTN_details;
+    private Gson gson;
 
     public Adapter_RetroPhoto(List<RetroPhoto> dataList, Context context) {
         this.dataList = dataList;
         this.context = context;
-    }
-
-    public void setPhotoItemClickedListener(PhotoItemClickedListener photoItemClickedListener) {
-        this.photoItemClickedListener = photoItemClickedListener;
+        gson = new Gson();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtTitle;
         private ImageView coverImage;
-        private Button list_BTN_details;
-        private Gson gson;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             txtTitle = itemView.findViewById(R.id.title);
             coverImage = itemView.findViewById(R.id.coverImage);
-            list_BTN_details = itemView.findViewById(R.id.list_BTN_details);
-
-            gson = new Gson();
-
-            int position = getAdapterPosition();
-            list_BTN_details.setOnClickListener(v -> {
-                Log.d("pttt", "Adapter Click");
-                Log.d("pttt", "size= " + getItemCount());
-                Intent intent = new Intent(context, Activity_Item.class);
-                RetroPhoto item = getItem(position);
-                String json = gson.toJson(item);
-                context
-                        .getSharedPreferences("MY_SP", Context.MODE_PRIVATE)
-                        .edit()
-                        .putString("RetroPhoto", json)
-                        .apply();
-                context.startActivity(intent);
-            });
         }
     }
 
@@ -80,6 +58,7 @@ public class Adapter_RetroPhoto extends RecyclerView.Adapter<Adapter_RetroPhoto.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.list_of_items, parent, false);
+        list_BTN_details = view.findViewById(R.id.list_BTN_details);
         return new ViewHolder(view);
     }
 
@@ -93,6 +72,18 @@ public class Adapter_RetroPhoto extends RecyclerView.Adapter<Adapter_RetroPhoto.
                 .into(holder.coverImage);
 
         holder.txtTitle.setText(photo.getTitle());
+
+        list_BTN_details.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Activity_Item.class);
+            RetroPhoto item = getItem(holder.getLayoutPosition());
+            String json = gson.toJson(item);
+            context
+                    .getSharedPreferences("MY_SP", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("RetroPhoto", json)
+                    .apply();
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -100,7 +91,4 @@ public class Adapter_RetroPhoto extends RecyclerView.Adapter<Adapter_RetroPhoto.
         return dataList.size();
     }
 
-    public interface PhotoItemClickedListener{
-        void itemClicked(RetroPhoto photo, int position);
-    }
 }
