@@ -20,10 +20,9 @@ public class MySharedPreferences {
         gson = new Gson();
     }
 
-    public static MySharedPreferences initHelper(Context context) {
+    public static void initHelper(Context context) {
         if (instance == null)
             instance = new MySharedPreferences(context);
-        return instance;
     }
 
     public static MySharedPreferences getInstance() {

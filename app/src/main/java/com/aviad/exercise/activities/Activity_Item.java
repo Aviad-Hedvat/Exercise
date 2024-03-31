@@ -1,7 +1,5 @@
 package com.aviad.exercise.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +11,6 @@ import com.aviad.exercise.R;
 import com.aviad.exercise.network.RetroPhoto;
 import com.aviad.exercise.utils.MySharedPreferences;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 
 public class Activity_Item extends AppCompatActivity {
 
@@ -26,9 +23,12 @@ public class Activity_Item extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        findView();
+        findViews();
+        initViews();
+    }
 
-        RetroPhoto item =  MySharedPreferences.getInstance().getObject("RetroPhoto", RetroPhoto.class);
+    private void initViews() {
+        RetroPhoto item = MySharedPreferences.getInstance().getObject("RetroPhoto", RetroPhoto.class);
 
         Glide
                 .with(getApplicationContext())
@@ -39,13 +39,14 @@ public class Activity_Item extends AppCompatActivity {
         item_LBL_title.setText(item.getTitle());
 
         item_BTN_back.setOnClickListener((v) -> finish());
-
     }
 
-    private void findView() {
+    private void findViews() {
         item_IMG_image = findViewById(R.id.item_IMG_image);
         item_BTN_back = findViewById(R.id.item_BTN_back);
         item_LBL_title = findViewById(R.id.item_LBL_title);
     }
+
+
 
 }

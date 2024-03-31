@@ -1,55 +1,77 @@
 package com.aviad.exercise.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.aviad.exercise.adapters.Adapter_RetroPhoto;
 import com.aviad.exercise.R;
-import com.aviad.exercise.network.GetDataService;
 import com.aviad.exercise.network.RetroPhoto;
-import com.aviad.exercise.network.RetrofitClientInstance;
+import com.aviad.exercise.network.RetroClient;
+import com.aviad.exercise.utils.MySharedPreferences;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView list_LST_photos;
+
+    private Context context;
+    private Button main_BTN_all;
+    private Button main_BTN_specific;
+    private EditText main_EDT_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list_LST_photos = findViewById(R.id.list_LST_photos);
+        context = getApplicationContext();
 
-        /* Create handle for the RetrofitInstance interface */
-        GetDataService service = RetrofitClientInstance.getInstance().create(GetDataService.class);
-        Call<List<RetroPhoto>> call = service.getAllPhotos();
-        call.enqueue(new Callback<List<RetroPhoto>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<RetroPhoto>> call, @NonNull Response<List<RetroPhoto>> response) {
-                generateDataList(response.body());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<RetroPhoto>> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        findViews();
+        initViews();
     }
 
-    /* Method to generate List of data using RecyclerView with custom adapter */
-    private void generateDataList(List<RetroPhoto> photoList) {
-        Adapter_RetroPhoto adapter = new Adapter_RetroPhoto(photoList, this);
-        list_LST_photos.setLayoutManager(new LinearLayoutManager(this));
-        list_LST_photos.setAdapter(adapter);
+    private void initViews() {
+        main_BTN_all.setOnClickListener((v) -> {
+            Intent intent = new Intent(context, Activity_Items.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
+
+        main_BTN_specific.setOnClickListener((v) -> showSpecificItem());
+    }
+
+    private void findViews() {
+        main_BTN_all = findViewById(R.id.main_BTN_all);
+        main_BTN_specific = findViewById(R.id.main_BTN_specific);
+        main_EDT_id = findViewById(R.id.main_EDT_id);
+    }
+
+    private void showSpecificItem() {
+        String id = String.valueOf(main_EDT_id.getText());
+        if (id.isEmpty() || id.equals("") || id.length() == 0)
+            Toast.makeText(context, "ID is missing", Toast.LENGTH_SHORT).show();
+        else {
+            RetroClient.getInstance().getPhotoById(new RetroClient.PhotosCallback() {
+                @Override
+                public void onResponse(List<RetroPhoto> photosList) {
+                    Log.d("pttt", "respose= " + photosList);
+                    Intent intent = new Intent(context, Activity_Item.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    RetroPhoto item = photosList.get(0);
+                    MySharedPreferences.getInstance().putObject("RetroPhoto", item);
+                    context.startActivity(intent);
+                }
+
+                @Override
+                public void onFailure(String errorMsg) {
+                    Log.d("pttt", "Fail");
+                    Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                }
+            }, id);
+        }
     }
 }

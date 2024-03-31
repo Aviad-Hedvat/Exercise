@@ -16,15 +16,15 @@ public class RetroPhoto {
     @SerializedName("url")
     private String url;
 
-    @SerializedName("thumbnaiUrl")
-    private String thumbnaiUrl;
+    @SerializedName("thumbnailUrl")
+    private String thumbnailUrl;
 
     public RetroPhoto(Integer albumId, Integer id, String title, String url, String thumbnaiUrl) {
         this.albumId = albumId;
         this.id = id;
         this.title = title;
         this.url = url;
-        this.thumbnaiUrl = thumbnaiUrl;
+        this.thumbnailUrl = thumbnaiUrl;
     }
 
     public Integer getAlbumId() {
@@ -63,12 +63,23 @@ public class RetroPhoto {
         return this;
     }
 
-    public String getThumbnaiUrl() {
-        return thumbnaiUrl;
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
-    public RetroPhoto setThumbnaiUrl(String thumbnaiUrl) {
-        this.thumbnaiUrl = thumbnaiUrl;
+    public RetroPhoto setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "RetroPhoto{" +
+                "albumId=" + albumId +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", thumbnaiUrl='" + thumbnailUrl + '\'' +
+                '}';
     }
 }
