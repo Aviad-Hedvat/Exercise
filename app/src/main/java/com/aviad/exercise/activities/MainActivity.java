@@ -1,4 +1,4 @@
-package com.aviad.exercise;
+package com.aviad.exercise.activities;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aviad.exercise.database.GetDataService;
-import com.aviad.exercise.database.RetroPhoto;
-import com.aviad.exercise.database.RetrofitClientInstance;
+import com.aviad.exercise.adapters.Adapter_RetroPhoto;
+import com.aviad.exercise.R;
+import com.aviad.exercise.network.GetDataService;
+import com.aviad.exercise.network.RetroPhoto;
+import com.aviad.exercise.network.RetrofitClientInstance;
 
 import java.util.List;
 

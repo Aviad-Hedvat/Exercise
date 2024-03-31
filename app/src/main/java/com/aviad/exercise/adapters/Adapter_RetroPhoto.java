@@ -1,4 +1,4 @@
-package com.aviad.exercise;
+package com.aviad.exercise.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aviad.exercise.database.RetroPhoto;
+import com.aviad.exercise.R;
+import com.aviad.exercise.network.RetroPhoto;
+import com.aviad.exercise.activities.Activity_Item;
+import com.aviad.exercise.utils.MySharedPreferences;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
@@ -72,12 +75,7 @@ public class Adapter_RetroPhoto extends RecyclerView.Adapter<Adapter_RetroPhoto.
         list_BTN_details.setOnClickListener(v -> {
             Intent intent = new Intent(context, Activity_Item.class);
             RetroPhoto item = getItem(holder.getLayoutPosition());
-            String json = gson.toJson(item);
-            context
-                    .getSharedPreferences("MY_SP", Context.MODE_PRIVATE)
-                    .edit()
-                    .putString("RetroPhoto", json)
-                    .apply();
+            MySharedPreferences.getInstance().putObject("RetroPhoto", item);
             context.startActivity(intent);
         });
     }

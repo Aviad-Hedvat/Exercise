@@ -1,4 +1,4 @@
-package com.aviad.exercise;
+package com.aviad.exercise.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.aviad.exercise.database.RetroPhoto;
+import com.aviad.exercise.R;
+import com.aviad.exercise.network.RetroPhoto;
+import com.aviad.exercise.utils.MySharedPreferences;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
@@ -26,10 +28,7 @@ public class Activity_Item extends AppCompatActivity {
 
         findView();
 
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("MY_SP", Context.MODE_PRIVATE);
-
-        String json = prefs.getString("RetroPhoto", "");
-        RetroPhoto item =  new Gson().fromJson(json, RetroPhoto.class);
+        RetroPhoto item =  MySharedPreferences.getInstance().getObject("RetroPhoto", RetroPhoto.class);
 
         Glide
                 .with(getApplicationContext())

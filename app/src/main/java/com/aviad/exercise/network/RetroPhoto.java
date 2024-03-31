@@ -1,4 +1,4 @@
-package com.aviad.exercise.database;
+package com.aviad.exercise.network;
 
 import com.google.gson.annotations.SerializedName;
 
